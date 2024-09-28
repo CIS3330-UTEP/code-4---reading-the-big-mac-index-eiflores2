@@ -2,17 +2,27 @@ import pandas as pd
 df = pd.read_csv('./big-mac-full-index.csv')
 
 def get_big_mac_price_by_year(year,country_code):
-    query = f"(date == '{year}' & iso_a3 == '{country_code.lower()}')"
+    # use query that focuses on both the year and country code
+    query = f"(date == '{year}' and iso_a3 == '{country_code.upper()}')"
     sub_df = df.query(query)
     mean_price =sub_df['dollar_price'].mean()
     return round(mean_price, 2)
 
 
 def get_big_mac_price_by_country(country_code):
-    pass # Remove this line and code your function
+    # use different query to focus on the country code
+    queryc = f"(iso_a3 == '{country_code.upper()}')"
+    sub_df = df.query(queryc)
+    # get the mean of price 
+    mean_price = sub_df['dollar_price'].mean()
+    return round (mean_price,2)
+
+
 
 def get_the_cheapest_big_mac_price_by_year(year):
-    pass # Remove this line and code your function
+    # make a query that checks the years by focusing on the date
+    queryd = f"(date == '{year}')"
+    sub_df = df.query(queryd)
 
 def get_the_most_expensive_big_mac_price_by_year(year):
     pass # Remove this line and code your function
