@@ -2,11 +2,14 @@ import pandas as pd
 df = pd.read_csv('./big-mac-full-index.csv')
 
 def get_big_mac_price_by_year(year,country_code):
-    # use query that focuses on both the year and country code
-    query = f"(date == '{year}')"
-    querycc = f"(iso_a3 == '{country_code.upper()}')"
+    # use query that focuses on the year
+    query = f"(date >= '{year}-01-01' and date <= '{year}-12-31')"
     sub_df = df.query(query)
-    mean_price =sub_df['dollar_price'].mean()
+    # use query that focuses on the country code
+    query_c = f"(iso_a3 == '{country_code.upper()}')"
+    cc = sub_df.query(query_c)
+    # get the mean and the price from the column
+    mean_price =cc['dollar_price'].mean()
     return round(mean_price, 2)
 
 
