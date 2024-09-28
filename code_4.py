@@ -21,7 +21,7 @@ def get_big_mac_price_by_country(country_code):
 
 def get_the_cheapest_big_mac_price_by_year(year):
     # make a query that checks the years by focusing on the date
-    queryd = f"(date == '{year}')"
+    queryd = f"(date >= '{year}-01-01' and date <= '{year}-12-31')"
     sub_df = df.query(queryd)
     # locate the column, row, and index by using .loc to find the min index
     minimum = sub_df.loc[sub_df['dollar_price'].idxmin()]
@@ -34,7 +34,25 @@ def get_the_cheapest_big_mac_price_by_year(year):
     return f"{c_name}({code}): ${price}"
 
 def get_the_most_expensive_big_mac_price_by_year(year):
-    pass # Remove this line and code your function
+    # most of the code is above in the min, just copy it and change the values from min to max
+    queryd = f"(date >= '{year}-01-01' and date <= '{year}-12-31')"
+    sub_df = df.query(queryd)
+    # locate the column, row, and index by using .loc to find the max index
+    maxx = sub_df.loc[sub_df['dollar_price'].idxmax()]
+    # locate the country name by using a separate variable and the maxx variable
+    c_name = maxx['name']
+    # locate the country code using a separate variable and the maxx variable
+    code = maxx['iso_a3']
+    # get the price using the maxx variable and using the dollar_price and round into 2 decimals
+    price = round(maxx['dollar_price'],2)
+    return f"{c_name}({code}): ${price}"
 
 if __name__ == "__main__":
-    pass 
+    result_a = get_big_mac_price_by_year(2012,'jpn')
+    print(result_a)
+    result_b = get_big_mac_price_by_country('mex')
+    print(result_b)
+    result_c = get_the_cheapest_big_mac_price_by_year(2008)
+    print(result_c)
+    result_d = get_the_most_expensive_big_mac_price_by_year(2003)
+    print(result_d)
